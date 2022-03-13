@@ -25,6 +25,31 @@ namespace DotNet.Docker
             Data = dataIn;  
         }
 
+        public String getTrayName()
+        {
+            return TrayName;
+        }
+
+        public String getCrop()
+        {
+            return Crop;
+        }
+
+        public DateTime getDateTime()
+        {
+            return Time;
+        }
+
+        public String getType()
+        {
+            return Type;
+        }
+
+        public Dictionary<String, UInt16> getData()
+        {
+            return Data;
+        }
+
         
     }
 }

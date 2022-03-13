@@ -56,7 +56,7 @@ namespace DotNet.Docker
             if (lightingPhasesJson != null)
             {
                 // Parse through the lighting phases and add all data from JSON into object
-                for (UInt16 i = 0; i < lightingPhasesJson.ToArray<JToken>().Length; i++)
+                for (int i = 0; i < lightingPhasesJson.ToArray<JToken>().Length; i++)
                 {
                     LightingPhase currentLightingPhase = new LightingPhase();
 
@@ -65,6 +65,7 @@ namespace DotNet.Docker
                     {
 
                         currentLightingPhase.setName(lightingPhasesJson[i]["name"].ToString());
+                        currentLightingPhase.setOrder(lightingPhasesJson[i]["order"].Value<UInt16>());
                         currentLightingPhase.setHours(lightingPhasesJson[i]["hours"].Value<UInt16>());
                         currentLightingPhase.setMinutes(lightingPhasesJson[i]["minutes"].Value<UInt16>());
                         currentLightingPhase.setRepetitions(lightingPhasesJson[i]["repetitions"].Value<UInt16>());
@@ -72,7 +73,7 @@ namespace DotNet.Docker
                     }
                     catch
                     {
-
+                        Console.WriteLine("ERROR: Unexpected behaviour setting lighting phase");
                     }
 
                     lightingPhases.Add(currentLightingPhase);
@@ -92,23 +93,23 @@ namespace DotNet.Docker
             if (wateringPhasesJson != null)
             {
                 // Parse through the watering phases and add all data from JSON into object
-                for (UInt16 i = 0; i < wateringPhasesJson.ToArray<JToken>().Length; i++)
+                for (int i = 0; i < wateringPhasesJson.ToArray<JToken>().Length; i++)
                 {
                     WateringPhase currentWateringPhase = new WateringPhase();
 
                     // Use try here in case something unexpected happens
                     try
                     {
-                        currentWateringPhase.Name = wateringPhasesJson[i]["name"].ToString();
-                        currentWateringPhase.Amount = wateringPhasesJson[i]["amount"].Value<UInt16>();
-                        currentWateringPhase.Order = wateringPhasesJson[i]["order"].Value<UInt16>();
-                        currentWateringPhase.Hours = wateringPhasesJson[i]["hours"].Value<UInt16>();
-                        currentWateringPhase.Minutes = wateringPhasesJson[i]["minutes"].Value<UInt16>();
-                        currentWateringPhase.Repetitions = wateringPhasesJson[i]["repetitions"].Value<UInt16>();
+                        currentWateringPhase.setName(wateringPhasesJson[i]["name"].ToString());
+                        currentWateringPhase.setAmount(wateringPhasesJson[i]["amount"].Value<UInt16>());
+                        currentWateringPhase.setOrder(wateringPhasesJson[i]["order"].Value<UInt16>());
+                        currentWateringPhase.setHours(wateringPhasesJson[i]["hours"].Value<UInt16>());
+                        currentWateringPhase.setMinutes(wateringPhasesJson[i]["minutes"].Value<UInt16>());
+                        currentWateringPhase.setRepetitions(wateringPhasesJson[i]["repetitions"].Value<UInt16>());
                     }
                     catch
                     {
-
+                        Console.WriteLine("ERROR: Unexpected behaviour setting watering phase");
                     }
 
                     wateringPhases.Add(currentWateringPhase);

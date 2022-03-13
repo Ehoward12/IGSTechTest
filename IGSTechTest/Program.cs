@@ -27,6 +27,8 @@ public class MainApp
         // Create our farm object, containing the trays and the recipes
         createFarm(ourRecipes);
 
+        ScheduleCreator scheduleCreator = new ScheduleCreator();
+        scheduleCreator.createScheduleForFarm(OurFarm);
 
 
         int j = 0;

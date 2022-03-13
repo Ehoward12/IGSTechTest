@@ -21,7 +21,7 @@ namespace DotNet.Docker
 
             for (int i = 0; i < recipes.Count; i++)
             {
-                if (recipes[i].getName() == tray.getTrayName())
+                if (recipes[i].getName() == tray.getCropName())
                 {
                     recipe = recipes[i];
                 }
@@ -49,6 +49,8 @@ namespace DotNet.Docker
                 ourSchedule.AddRange(wateringActions);
             }
 
+            // Now need to order the list of actions by time
+            ourSchedule = ourSchedule.OrderBy(o => o.getDateTime()).ToList();
 
             return ourSchedule;
         }
@@ -60,7 +62,9 @@ namespace DotNet.Docker
             // Create date / time stamp for keeping track of actions
             DateTime timeTrack = new DateTime();
 
-            List<LightingPhase> orderedLightingPhases = new List<LightingPhase>();
+            // Create an empty list of a fixed size
+            List<LightingPhase> orderedLightingPhases = 
+                new List<LightingPhase>(new LightingPhase[recipe.getLightingPhases().Count]);
 
             // First put lighting phases in order, using the order attribute
             for (int i = 0; i < recipe.getLightingPhases().Count; i++)
@@ -68,7 +72,7 @@ namespace DotNet.Docker
                 LightingPhase lightingPhase = recipe.getLightingPhases()[i];
 
                 // Insert the lighting phase using its provided order number
-                orderedLightingPhases.Insert(lightingPhase.getOrder(), lightingPhase);
+                orderedLightingPhases[lightingPhase.getOrder()] = lightingPhase;
             }
 
             // Start constructing the actions from the lighting phases
@@ -76,18 +80,18 @@ namespace DotNet.Docker
             {
                 LightingPhase lightingPhase = orderedLightingPhases[phaseNo];
 
-                DateTime phaseStamp = timeTrack;
-
                 for (int repetitionNo = 0; repetitionNo < lightingPhase.getRepetitions(); repetitionNo++)
                 {
                     List<LightingPhaseOperation> operations = lightingPhase.getLightingPhaseOperations();
+
+                    DateTime phaseStamp = timeTrack;
 
                     for (int operationNo = 0; operationNo < operations.Count; operationNo++)
                     {
                         LightingPhaseOperation currentOperation = operations[operationNo];
 
-                        timeTrack.AddHours(currentOperation.getOffsetHours());
-                        timeTrack.AddMinutes(currentOperation.getOffsetMinutes());
+                        timeTrack = timeTrack.AddHours( (double) currentOperation.getOffsetHours());
+                        timeTrack = timeTrack.AddMinutes( (double) currentOperation.getOffsetMinutes());
 
                         Dictionary<String, UInt16> actionData = new Dictionary<String, UInt16>();
                         actionData.Add("Intensity", currentOperation.getLightIntensity());
@@ -96,13 +100,14 @@ namespace DotNet.Docker
                                                 "lighting", actionData);
 
                         actions.Add(currentAction);
+
+                        // Reset time track to beginning of phase
+                        timeTrack = phaseStamp;
                     }
 
-                    // Reset time track to beginning of phase
-                    timeTrack = phaseStamp;
-                    // Add phase hours * number of current repetitions
+                    // Add phase hours
                     // This will keep the time track up to date on the current repetition
-                    timeTrack.AddHours(lightingPhase.getHours() * (repetitionNo + 1));
+                    timeTrack = timeTrack.AddHours(lightingPhase.getHours());
 
                 }
 
@@ -117,7 +122,41 @@ namespace DotNet.Docker
             List<Action> actions = new List<Action>();
 
             // Create date / time stamp for keeping track of actions
-            DateTime dateTime = new DateTime();
+            DateTime timeTrack = new DateTime();
+
+            // Create an empty list of a fixed size
+            List<WateringPhase> orderedWateringPhases = 
+                new List<WateringPhase>( new WateringPhase[recipe.getWateringPhases().Count] );
+
+            // First put watering phases in order, using the order attribute
+            for (int i = 0; i < recipe.getWateringPhases().Count; i++)
+            {
+                WateringPhase wateringPhase = recipe.getWateringPhases()[i];
+
+                // Insert the lighting phase using its provided order number             
+                orderedWateringPhases[wateringPhase.getOrder()] = wateringPhase;
+            }
+
+            // Start constructing the actions from the lighting phases
+            for (int phaseNo = 0; phaseNo < orderedWateringPhases.Count; phaseNo++)
+            {
+                WateringPhase wateringPhase = orderedWateringPhases[phaseNo];
+
+                for (int repetitionNo = 0; repetitionNo < wateringPhase.getRepetitions(); repetitionNo++)
+                { 
+                    Dictionary<String, UInt16> actionData = new Dictionary<String, UInt16>();
+                    actionData.Add("Amount", wateringPhase.getAmount());
+
+                    Action currentAction = new Action(trayName, recipe.getName(), timeTrack,
+                                            "Watering", actionData);
+
+                    actions.Add(currentAction);
+
+                    // Update time tracker following addition of action
+                    timeTrack = timeTrack.AddHours((double)wateringPhase.getHours());
+                    timeTrack = timeTrack.AddMinutes((double)wateringPhase.getMinutes());
+                }
+            }
 
             return actions;
         }
