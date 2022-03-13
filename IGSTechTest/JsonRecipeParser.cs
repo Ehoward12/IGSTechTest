@@ -56,7 +56,7 @@ namespace DotNet.Docker
             if (lightingPhasesJson != null)
             {
                 // Parse through the lighting phases and add all data from JSON into object
-                for (int i = 0; i < lightingPhasesJson.ToArray<JToken>().Length; i++)
+                for (UInt16 i = 0; i < lightingPhasesJson.ToArray<JToken>().Length; i++)
                 {
                     LightingPhase currentLightingPhase = new LightingPhase();
 
@@ -64,10 +64,10 @@ namespace DotNet.Docker
                     try
                     {
 
-                        currentLightingPhase.Name = lightingPhasesJson[i]["name"].ToString();
-                        currentLightingPhase.Hours = lightingPhasesJson[i]["hours"].Value<UInt16>();
-                        currentLightingPhase.Minutes = lightingPhasesJson[i]["minutes"].Value<UInt16>();
-                        currentLightingPhase.Repetitions = lightingPhasesJson[i]["repetitions"].Value<UInt16>();
+                        currentLightingPhase.setName(lightingPhasesJson[i]["name"].ToString());
+                        currentLightingPhase.setHours(lightingPhasesJson[i]["hours"].Value<UInt16>());
+                        currentLightingPhase.setMinutes(lightingPhasesJson[i]["minutes"].Value<UInt16>());
+                        currentLightingPhase.setRepetitions(lightingPhasesJson[i]["repetitions"].Value<UInt16>());
                         currentLightingPhase.setOperations(lightingPhasesJson[i]["operations"].Values<JObject>().ToList());
                     }
                     catch
@@ -92,7 +92,7 @@ namespace DotNet.Docker
             if (wateringPhasesJson != null)
             {
                 // Parse through the watering phases and add all data from JSON into object
-                for (int i = 0; i < wateringPhasesJson.ToArray<JToken>().Length; i++)
+                for (UInt16 i = 0; i < wateringPhasesJson.ToArray<JToken>().Length; i++)
                 {
                     WateringPhase currentWateringPhase = new WateringPhase();
 
@@ -118,7 +118,7 @@ namespace DotNet.Docker
             return wateringPhases;
         }
 
-        public Recipe getCompleteRecipe(UInt16 index)
+        private Recipe getCompleteRecipe(UInt16 index)
         {
             Recipe recipe = new Recipe();
 
@@ -140,9 +140,9 @@ namespace DotNet.Docker
 
                         List<WateringPhase> wateringPhases = getWateringPhases(currentRecipe);
 
-                        recipe.Name = currentRecipe["name"].ToString();
-                        recipe.LightingPhases = lightingPhases;
-                        recipe.WateringPhases = wateringPhases;
+                        recipe.setName(currentRecipe["name"].ToString());
+                        recipe.setLightingPhases(lightingPhases);
+                        recipe.setWateringPhases(wateringPhases);
 
                      }
                     catch
@@ -155,6 +155,18 @@ namespace DotNet.Docker
             }
 
             return recipe;
+        }
+
+        public List<Recipe> getAllRecipes()
+        {
+            List<Recipe> allRecipes = new List<Recipe>();
+
+            for (UInt16 i = 0; i < getNumberOfRecipes(); i++)
+            {
+                allRecipes.Add(getCompleteRecipe(i));
+            }
+
+            return allRecipes;
         }
 
        

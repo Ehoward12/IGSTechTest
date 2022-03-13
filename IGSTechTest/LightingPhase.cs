@@ -10,12 +10,12 @@ namespace DotNet.Docker
 
     public class LightingPhase
     {
+        private String Name;
+        private UInt16 Order;
+        private UInt16 Hours;
+        private UInt16 Minutes;
+        private UInt16 Repetitions;
         private List<LightingPhaseOperation> Operations;
-        public String Name { get; set; }
-        public UInt16 Order { get; set; }
-        public UInt16 Hours { get; set; }
-        public UInt16 Minutes { get; set; }
-        public UInt16 Repetitions { get; set; }
 
         public LightingPhase()
         {
@@ -25,6 +25,56 @@ namespace DotNet.Docker
             Hours = 0;
             Minutes = 0;
             Repetitions = 0;
+        }
+
+        public void setName(String nameIn)
+        {
+            this.Name = nameIn;  
+        }
+
+        public String getName()
+        {
+            return this.Name;
+        }
+
+        public void setOrder(UInt16 orderIn)
+        {
+            this.Order = orderIn;
+        }
+
+        public UInt16 getOrder()
+        {
+            return this.Order;
+        }
+
+        public void setHours(UInt16 hoursIn)
+        {
+            this.Hours = hoursIn;
+        }
+
+        public UInt16 getHours()
+        {
+            return this.Hours;
+        }
+
+        public void setMinutes(UInt16 minutesIn)
+        {
+            this.Minutes = minutesIn;
+        }
+
+        public UInt16 getMinutes()
+        {
+            return this.Minutes;
+        }
+
+        public void setRepetitions(UInt16 repetitionsIn)
+        {
+            this.Repetitions = repetitionsIn;
+        }
+
+        public UInt16 getRepetitions()
+        {
+            return this.Repetitions;
         }
 
         public void setOperations(List<JObject> operationList)
@@ -48,6 +98,11 @@ namespace DotNet.Docker
                 }
                 Operations.Add(phase);
             }
+        }
+
+        public List<LightingPhaseOperation> getLightingPhaseOperations()
+        {
+            return this.Operations;
         }
     }
 }

@@ -9,38 +9,22 @@ namespace DotNet.Docker
 {
     public class Action : JsonSerializerSettings
     {
-        private String crop;
-        private DateTime time;
-        private String type;
-        private Dictionary<String, UInt16> data;
+        private String TrayName;
+        private String Crop;
+        private DateTime Time;
+        private String Type;
+        private Dictionary<String, UInt16> Data;
 
-        public Action(String cropIn, DateTime timeIn, 
+        public Action(String trayIn, String cropIn, DateTime timeIn, 
             String typeIn, Dictionary<String, UInt16> dataIn)
         {
-            crop = cropIn;
-            time = timeIn;
-            type = typeIn;
-            data = dataIn;  
+            TrayName = trayIn;
+            Crop = cropIn;
+            Time = timeIn;
+            Type = typeIn;
+            Data = dataIn;  
         }
 
-        public String getCrop()
-        {
-            return crop;
-        }
-
-        public DateTime getTime()
-        {
-            return time;    
-        }
-
-        public String getType()
-        {
-            return type;
-        }
-
-        public Dictionary<String, UInt16> getData()
-        {
-            return data;
-        }
+        
     }
 }

@@ -8,17 +8,47 @@ namespace DotNet.Docker
 {
     public class Recipe
     {
-        public string Name { get; set; }
+        private string Name;
 
-        public List<LightingPhase> LightingPhases { get; set; }
+        private List<LightingPhase> LightingPhases;
 
-        public List<WateringPhase> WateringPhases { get; set; }
-
+        private List<WateringPhase> WateringPhases;
+        
         public Recipe()
         {
             Name = "";
             LightingPhases = new List<LightingPhase>();
             WateringPhases = new List<WateringPhase>();
+        }
+
+        public void setName(String name)
+        {
+            this.Name = name;
+        }
+
+        public String getName()
+        {
+            return Name;
+        }
+
+        public void setLightingPhases(List<LightingPhase> lightingPhases)
+        {
+            this.LightingPhases = lightingPhases;
+        }
+
+        public List<LightingPhase> getLightingPhases()
+        {
+            return LightingPhases;
+        }
+
+        public void setWateringPhases(List<WateringPhase> wateringPhases)
+        {
+            this.WateringPhases = wateringPhases;
+        }
+
+        public List<WateringPhase> getWateringPhases()
+        {
+            return WateringPhases;
         }
     }
 }

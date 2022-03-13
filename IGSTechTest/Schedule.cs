@@ -9,16 +9,11 @@ namespace DotNet.Docker
 {
     public class Schedule : JsonSerializerSettings
     {
-        List<Action> actions;
+        public List<Action> actions { get; set; }
 
-        public Schedule(List<Action> actionsIn)
+        public Schedule()
         {
-            actions = actionsIn;
-        }
-
-        public List<Action> getActions()
-        {
-            return actions;
+            actions = new List<Action>();
         }
     }
 }
