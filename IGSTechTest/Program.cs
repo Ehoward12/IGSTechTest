@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using DotNet.Docker;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 MainApp application = new MainApp();
 
@@ -11,9 +12,15 @@ public class MainApp
 
     public MainApp()
     {
-        String result = api.getJsonFromUrl(recipeUrl);
-        Console.WriteLine(result);
+        String recipesJson = api.getJsonFromUrl(recipeUrl);
 
+        JsonRecipeParser parser = new JsonRecipeParser(recipesJson);
+
+        Recipe recipe = parser.getCompleteRecipe(0);
+
+        Recipe recipe2 = parser.getCompleteRecipe(1);
+
+        int i = 0;
     }
 
 }

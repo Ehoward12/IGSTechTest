@@ -13,3 +13,5 @@ C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\obj\Debug\net6.0\r
 C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\obj\Debug\net6.0\DotNet.Docker.pdb
 C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\obj\Debug\net6.0\DotNet.Docker.genruntimeconfig.cache
 C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\obj\Debug\net6.0\ref\DotNet.Docker.dll
+C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\obj\Debug\net6.0\DotNet.Docker.csproj.CopyComplete
