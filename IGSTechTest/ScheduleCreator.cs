@@ -55,6 +55,43 @@ namespace DotNet.Docker
             return ourSchedule;
         }
 
+        public String getScheduleJsonFromActionList(List<Action> actions)
+        {
+            // Create json string prefix
+            String json = @"{
+                            ""schedule"":
+                            [
+                                {
+                                ""actions"":[";
+
+
+
+            for (int i = 0; i < actions.Count; i++)
+            {
+                Action currentAction = actions[i];
+
+                json += "{";
+                json += @" ""trayName"": "" " + currentAction.getTrayName() + @""",";
+                json += @" ""crop"": "" " + currentAction.getCrop() + @""",";
+                json += @" ""datetime"": "" " + currentAction.getDateTime().ToString() + @""",";
+                json += @" ""type"": "" " + currentAction.getType() + @""",";
+                json += @" """ + currentAction.getData().Keys.ToList()[0] + @""": "" " + currentAction.getData().Values.ToList()[0] + @"""";
+                json += "}";
+
+                // If we're not on our final iteration of the loop, add a comma for the next action
+                if (actions.Count != i + 1)
+                {
+                    json += ",";
+                }
+            }
+
+            json += @"]}
+                ]
+            }";
+
+            return json;
+        }
+
         private List<Action> getLightingActions(Recipe recipe, String trayName)
         {
             List<Action> actions = new List<Action>();

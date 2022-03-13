@@ -28,10 +28,11 @@ public class MainApp
         createFarm(ourRecipes);
 
         ScheduleCreator scheduleCreator = new ScheduleCreator();
-        scheduleCreator.createScheduleForFarm(OurFarm);
+        List<DotNet.Docker.Action> scheduleList = scheduleCreator.createScheduleForFarm(OurFarm);
 
+        String scheduleJson = scheduleCreator.getScheduleJsonFromActionList(scheduleList);
 
-        int j = 0;
+        System.IO.File.WriteAllText("schedule.JSON", scheduleJson);
     }
 
     private void createFarm(List<Recipe> ourRecipes)
