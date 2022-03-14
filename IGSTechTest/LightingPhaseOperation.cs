@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DotNet.Docker
 {
+    // Class is used to store information for a lighting phase operation
     public class LightingPhaseOperation
     {
         private UInt16 OffsetHours;

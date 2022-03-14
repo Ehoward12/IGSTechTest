@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DotNet.Docker
 {
+    // Class is used to store information for a crop tray
     public class CropTray
     {
         private String TrayName;

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace DotNet.Docker
 {
+    // Action class is used to store an individual action in the schedule
     public class Action : JsonSerializerSettings
     {
         private String TrayName;

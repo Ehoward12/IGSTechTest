@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DotNet.Docker
 {
-
+    // Class is used to store information for a lighting phase
     public class LightingPhase
     {
         private String Name;

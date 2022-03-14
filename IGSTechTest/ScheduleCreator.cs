@@ -9,16 +9,18 @@ namespace DotNet.Docker
     public class ScheduleCreator
     {
 
+        // Constructor
         public ScheduleCreator()
         {
-
+            // Do nothing
         }
 
-        // Find the recipe for a given tray
+        // Pulls the recipe for a given tray
         private Recipe findRecipeForTray(CropTray tray, List<Recipe> recipes)
         {
             Recipe recipe = null;
 
+            // Check through the recipes and find which recipe our tray needs to use
             for (int i = 0; i < recipes.Count; i++)
             {
                 if (recipes[i].getName() == tray.getCropName())
@@ -30,6 +32,8 @@ namespace DotNet.Docker
             return recipe;
         }
 
+        // Public operation used to create our farm schedule, given the farm object
+        // containing the recipes and the trays
         public List<Action> createScheduleForFarm(VerticalFarm ourFarm)
         {
             List<Action> ourSchedule = new List<Action>();
@@ -42,19 +46,22 @@ namespace DotNet.Docker
                 // Find recipe for current crop tray
                 Recipe trayRecipe = findRecipeForTray(currentTray, ourFarm.getFarmRecipes());
 
+                // Creates a list of Schedule Actions for the lighting and then watering phases of tray
                 List<Action> lightingActions = getLightingActions(trayRecipe, currentTray.getTrayName());
                 List<Action> wateringActions = getWateringActions(trayRecipe, currentTray.getTrayName());
 
+                // Adds actions to main list
                 ourSchedule.AddRange(lightingActions);
                 ourSchedule.AddRange(wateringActions);
             }
 
-            // Now need to order the list of actions by time
+            // Now need to order the list of actions by time, so schedule is in proper order
             ourSchedule = ourSchedule.OrderBy(o => o.getDateTime()).ToList();
 
             return ourSchedule;
         }
 
+        // Convert our list of actions into a JSON string
         public String getScheduleJsonFromActionList(List<Action> actions)
         {
             // Create json string prefix
@@ -66,6 +73,7 @@ namespace DotNet.Docker
 
 
 
+            // Loops through all actions and creates a JSON string for each, adding to main JSON string
             for (int i = 0; i < actions.Count; i++)
             {
                 Action currentAction = actions[i];
@@ -85,6 +93,7 @@ namespace DotNet.Docker
                 }
             }
 
+            // Suffix for JSON contents
             json += @"]}
                 ]
             }";
@@ -92,6 +101,7 @@ namespace DotNet.Docker
             return json;
         }
 
+        // Creates a list of actions for our lighting phases of a tray
         private List<Action> getLightingActions(Recipe recipe, String trayName)
         {
             List<Action> actions = new List<Action>();
@@ -99,7 +109,7 @@ namespace DotNet.Docker
             // Create date / time stamp for keeping track of actions
             DateTime timeTrack = new DateTime();
 
-            // Create an empty list of a fixed size
+            // Create an empty list of a fixed size - number of lighting phases in recipe
             List<LightingPhase> orderedLightingPhases = 
                 new List<LightingPhase>(new LightingPhase[recipe.getLightingPhases().Count]);
 
@@ -113,29 +123,37 @@ namespace DotNet.Docker
             }
 
             // Start constructing the actions from the lighting phases
+            // Loop through all lighting phases
             for (int phaseNo = 0; phaseNo < orderedLightingPhases.Count; phaseNo++)
             {
                 LightingPhase lightingPhase = orderedLightingPhases[phaseNo];
 
+                // Loop through number of repetitions each phase requires
                 for (int repetitionNo = 0; repetitionNo < lightingPhase.getRepetitions(); repetitionNo++)
                 {
                     List<LightingPhaseOperation> operations = lightingPhase.getLightingPhaseOperations();
 
+                    // Take a timestamp here, as this will be used to reset our tracker to prior to incrementing time
                     DateTime phaseStamp = timeTrack;
 
+                    // Loop through each lighting phase operation and create an action
                     for (int operationNo = 0; operationNo < operations.Count; operationNo++)
                     {
                         LightingPhaseOperation currentOperation = operations[operationNo];
 
+                        // Increment time tracker with hours and minutes from current operation
                         timeTrack = timeTrack.AddHours( (double) currentOperation.getOffsetHours());
                         timeTrack = timeTrack.AddMinutes( (double) currentOperation.getOffsetMinutes());
 
+                        // Add the intensity as a dict, to the action
                         Dictionary<String, UInt16> actionData = new Dictionary<String, UInt16>();
                         actionData.Add("Intensity", currentOperation.getLightIntensity());
 
+                        // Form the action using the gathered data
                         Action currentAction = new Action(trayName, recipe.getName(), timeTrack,
                                                 "lighting", actionData);
 
+                        // Add the action to our list
                         actions.Add(currentAction);
 
                         // Reset time track to beginning of phase
@@ -154,6 +172,7 @@ namespace DotNet.Docker
             return actions;
         }
 
+        // Creates a list of actions for our waterings phases of a tray
         private List<Action> getWateringActions(Recipe recipe, String trayName)
         {
             List<Action> actions = new List<Action>();
@@ -161,7 +180,7 @@ namespace DotNet.Docker
             // Create date / time stamp for keeping track of actions
             DateTime timeTrack = new DateTime();
 
-            // Create an empty list of a fixed size
+            // Create an empty list of a fixed size - number of lighting phases in recipe
             List<WateringPhase> orderedWateringPhases = 
                 new List<WateringPhase>( new WateringPhase[recipe.getWateringPhases().Count] );
 
@@ -170,23 +189,28 @@ namespace DotNet.Docker
             {
                 WateringPhase wateringPhase = recipe.getWateringPhases()[i];
 
-                // Insert the lighting phase using its provided order number             
+                // Insert the watering phase using its provided order number             
                 orderedWateringPhases[wateringPhase.getOrder()] = wateringPhase;
             }
 
-            // Start constructing the actions from the lighting phases
+            // Start constructing the actions from the watering phases
+            // Loop through all the watering phases contained within the recipe
             for (int phaseNo = 0; phaseNo < orderedWateringPhases.Count; phaseNo++)
             {
                 WateringPhase wateringPhase = orderedWateringPhases[phaseNo];
 
+                // Loop through number of repetitions each phase requires
                 for (int repetitionNo = 0; repetitionNo < wateringPhase.getRepetitions(); repetitionNo++)
                 { 
+                    // Add water amount to dict, and then into action
                     Dictionary<String, UInt16> actionData = new Dictionary<String, UInt16>();
                     actionData.Add("Amount", wateringPhase.getAmount());
 
+                    // Form action using gathered information of the watering phase
                     Action currentAction = new Action(trayName, recipe.getName(), timeTrack,
                                             "Watering", actionData);
 
+                    // Add watering phase to list
                     actions.Add(currentAction);
 
                     // Update time tracker following addition of action

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DotNet.Docker
 {
+    // Class is used to store information for a watering phase
     public class WateringPhase
     {
         private UInt16 Amount;
