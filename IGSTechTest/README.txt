@@ -206,5 +206,4 @@ changes are pushed to the master branch, the software would be updated automatic
 repository and continue to run. Ultimately, the desire would be to have one seamless process, which 
 would make it easy for developers to add clean, tested and working code.
 
-Something else that I wish I did would be to move all source files into contained folders, instead
-of them all being in the root directory of the repo.
+INSTRUCTIONS.txt has been added to describe process to run the application.

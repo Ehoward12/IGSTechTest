@@ -7,6 +7,8 @@ Instructions for running the application (Works on Windows 11):
  - You should see the outputted schedule in JSON form, for the current farm setup
  - Recommend that this is copied into a VS Code file and formatted using a JSON formatter
 
+^^^ The "FarmScheduler.sln" can also be opened in Visual Studio (2022) and ran, to provide the same result
+
 
 The current farm is hard-coded as:
 

@@ -1,5 +1,3 @@
-C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\bin\Debug\net6.0\appsettings.Development.json
-C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\bin\Debug\net6.0\appsettings.json
 C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\bin\Debug\net6.0\schedule.JSON
 C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\bin\Debug\net6.0\FarmScheduler.exe
 C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\bin\Debug\net6.0\FarmScheduler.deps.json
@@ -35,3 +33,5 @@ C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\obj\Debug\net6.0\r
 C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\obj\Debug\net6.0\FarmScheduler.pdb
 C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\obj\Debug\net6.0\FarmScheduler.genruntimeconfig.cache
 C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\obj\Debug\net6.0\ref\FarmScheduler.dll
+C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\bin\Debug\net6.0\FarmScheduler\appsettings.Development.json
+C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest\bin\Debug\net6.0\FarmScheduler\appsettings.json
