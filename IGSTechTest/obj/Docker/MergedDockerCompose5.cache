@@ -1,0 +1,8 @@
+services:
+  farmscheduler:
+    build:
+      context: C:\Users\ellio\OneDrive\Documents\IGS\IGSTechTest\IGSTechTest
+    ports:
+    - published: 8000
+      target: 80
+version: '3.9'

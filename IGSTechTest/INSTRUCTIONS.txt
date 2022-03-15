@@ -1,0 +1,27 @@
+Instructions for running the application (Works on Windows 11):
+
+ - Run the recipe API (given for the task) using docker-compose up in a terminal
+ - Pull everything into a local repo from GIT
+ - Open a terminal inside the local repo and run "docker-compose up"
+ - Navigate to "http://localhost:8000/farm/schedule" inside a browser
+ - You should see the outputted schedule in JSON form, for the current farm setup
+ - Recommend that this is copied into a VS Code file and formatted using a JSON formatter
+
+
+The current farm is hard-coded as:
+
+private readonly String[] trayArray = {"Basil", "Basil", "Basil", "Basil", "Basil",
+                                         "Basil", "Strawberries", "Strawberries",
+                                         "Strawberries", "Strawberries"};
+
+Indicating that we have 6 Basil trays and 4 Strawberry trays.
+This can be edited inside of the Program.cs file, and the app can be rebuilt using
+"docker-compose build" and then re-run using "docker-compose up".
+
+ - Ideally this would be chosen by a user, or in a production environment, chosen
+by some external application in communication with this app.
+
+
+Within the repo, I have included a README.txt which I used as a journal while developing
+the code for this software. All thought processes and steps were recorded here, as well
+as thoughts regarding possible improvements.

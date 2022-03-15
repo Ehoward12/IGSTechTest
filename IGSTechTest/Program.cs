@@ -1,10 +1,35 @@
-﻿using System.Net;
-using DotNet.Docker;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using DotNet.Docker;
 
-// Create our main application
-MainApp application = new MainApp();
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddEndpointsApiExplorer();
+
+var app = builder.Build();
+
+Console.WriteLine("Hello World");
+
+app.MapGet("/", () =>
+{
+    return "Hello World";
+});
+
+app.MapGet("/farm/schedule", () =>
+{
+
+    // Create our main application
+    MainApp application = new MainApp();
+
+    // Get our farming schedule
+    String ourFarmSchedule = application.runFarmAndGetSchedule();
+
+    // Return
+    var rootObject = new { farmSchedule = ourFarmSchedule };
+
+    return Results.Ok(rootObject);
+
+});
+
+app.Run();
 
 // The main application for our Recipe to JSON schedule software
 public class MainApp
@@ -19,7 +44,7 @@ public class MainApp
     // Constants
 
     // Recipe URL for the API
-    const String recipeUrl = "http://localhost:8080/recipe";
+    const String recipeUrl = "http://host.docker.internal:8080/recipe";
     // List containing the trays our farm will grow
     private readonly String[] trayArray = {"Basil", "Basil", "Basil", "Basil", "Basil",
                                          "Basil", "Strawberries", "Strawberries",
@@ -28,8 +53,13 @@ public class MainApp
     // Constructor
     public MainApp()
     {
+        // Do nothing
+    }
+
+    public String runFarmAndGetSchedule()
+    {
         // Get the JSON from the API
-        String recipesJson = Api.getJsonFromUrl(recipeUrl);
+        String recipesJson =  Api.getJsonFromUrl(recipeUrl);
 
         // Parse the JSON data and store in easily readable objects
         JsonRecipeParser parser = new JsonRecipeParser(recipesJson);
@@ -50,6 +80,8 @@ public class MainApp
 
         // Write JSON string to file
         System.IO.File.WriteAllText("schedule.JSON", scheduleJson);
+
+        return scheduleJson;
     }
 
     // Creates our farm object with its crop trays
